@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>digital clock</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+  <style>
+    body {
+      background: linear-gradient(rgb(175, 255, 27), rgb(255, 0, 0));
+      color: rgb(13, 230, 31);
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #clock {
+      font-size: 60px;
+      padding: 20px 40px;
+      border: 2px solid #ff0000;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 20px rgb(0, 255, 34);
+      background: linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0));
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .start { background: linear-gradient(rgb(95, 39, 148), rgb(219, 21, 209)); }
+    .stop { background: linear-gradient(rgb(28, 221, 255), rgb(208, 255, 0)); }
+    .color { background: linear-gradient(rgba(9, 175, 59, 0.788), rgba(255, 0, 234, 0.74)); }
+  </style>
+</head>
+<body>
+    <div id="clock">00:00:00</div>
+
+<div>
+  <button class="btn start" id="startBtn">Start</button>
+  <button class="btn stop" id="stopBtn">Stop</button>
+  <button class="btn color" id="colorBtn">Change Color</button>
+</div>
+<script>
+  let intervalId = null;
+
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    $('#clock').text(`${h}:${m}:${s}`);
+  }
+
+  function startClock() {
+    if (!intervalId) {
+      updateClock(); // update immediately
+      intervalId = setInterval(updateClock, 1000);
+    }
+  }
+
+  function stopClock() {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  }
+
+  $(document).ready(function () {
+    startClock(); // Start clock on load
+
+    $('#startBtn').click(function () {
+      startClock();
+    });
+
+    $('#stopBtn').click(function () {
+      stopClock();
+    });
+
+    $('#colorBtn').click(function () {
+      const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+      $('#clock').css({
+        'color': randomColor,
+        'box-shadow': `0 0 20px ${randomColor}`
+      });
+    });
+  });
+</script>
+</body>
+</html>
